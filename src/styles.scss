@@ -1,1 +1,104 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+$ecommerce-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$cyan-palette
+  ),
+  typography: (
+    brand-family: 'Roboto',
+    bold-weight: 900
+  ),
+  density: (
+    scale: -1
+  )
+));
+
+
+
 /* You can add global styles to this file, and also import other style files */
+
+html, body { 
+    height: 100%;
+}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.admin-theme{
+    background-color: #242c2c;
+    @include mat.all-component-themes($ecommerce-theme); 
+    @include mat.button-theme($ecommerce-theme);
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+
+.space-around{
+    justify-content: space-around;
+}
+
+.align-center{
+    align-items: center;
+}
+
+.align-end{
+    align-items: flex-end;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.col{
+    display: flex;
+    flex-direction: column;
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.text-white{
+    color: #FFFFFF;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.full-height{
+    height: 100%;
+}
+
+.fs-2{
+    font-size: 24px;
+} 
+.fs-3{
+    font-size: 20px;
+}
+.fs-4{
+    font-size: 16px;
+}
+
+.fw-bold{
+    font-weight: 600;
+}
+
+.fw-light{
+    font-weight: 400;
+}
+
+.py-3{
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+}
+.py-5{
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+}

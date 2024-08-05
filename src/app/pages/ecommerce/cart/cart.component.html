@@ -1,0 +1,80 @@
+<div class="admin-theme full-height px-3 py-3">
+    <div class="row space-between align-center">
+        <h1 class="text-white">Freseria UMG</h1>
+    </div>
+    <mat-horizontal-stepper>
+        <!-- PASO 1 -->
+        <mat-step label="Productos de carrito">
+            <!-- PRODUCTS -->
+            <div class="col align-center text-white py-5">
+                <p class="text-white py-3">Productos en carrito: {{cartToCheckout.length}}</p>
+                <p>Total: {{cartTotal}}</p>
+                <div *ngFor="let cartProduct of cartToCheckout" class="row space-between align-center full-width">
+                    <section class="row align-center justify-center">
+                        <img [src]="cartProduct.product.imageUrl" alt="Shiba Inu" class="image-fluid product-image">
+                        <span>
+                            <p class="fs-2 fw-bold">{{cartProduct.product.name}}</p>
+                            <p class="fs-4 fw-light">{{cartProduct.product.description}}</p>
+                        </span>
+                    </section>
+                    <section>
+                        <mat-form-field>
+                            <mat-label>Tamaño</mat-label>
+                            <mat-select (selectionChange)="trackPrice($event, cartProduct.product.id)">
+                                @for (size of cartProduct.product.size; track size) {
+                                <mat-option [value]="size.price">{{size.name}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </section>
+                    <section>
+                        <mat-form-field>
+                            <mat-label>Dulces</mat-label>
+                            <mat-select (selectionChange)="trackPrice($event, cartProduct.product.id)">
+                                @for (candy of cartProduct.product.candy; track candy) {
+                                <mat-option [value]="candy.price">{{candy.name}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </section>
+                    <section>
+                        <mat-form-field>
+                            <mat-label>Jarabe</mat-label>
+                            <mat-select (selectionChange)="trackPrice($event, cartProduct.product.id)">
+                                @for (syrup of cartProduct.product.syrup; track syrup) {
+                                <mat-option [value]="syrup.price">{{syrup.name}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </section>
+                    <section>
+                        <p>Precio: {{cartProduct.price}}</p>
+                    </section>
+                </div>
+            </div>
+            <div class="row justify-end full-width">
+                <button mat-button matStepperNext>Continuar</button>
+            </div>
+        </mat-step>
+        <mat-step label="Datos del cliente">
+            <div>
+                <mat-form-field>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput placeholder="Nombre">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Correo</mat-label>
+                    <input matInput placeholder="Correo">
+                </mat-form-field>
+            </div>
+            <div class="row justify-end full-width">
+                <button mat-button matStepperPrevious>Atras</button>
+                <button mat-button matStepperNext>A pagar</button>
+            </div>
+        </mat-step>
+        <!-- PASO 1 -->
+    </mat-horizontal-stepper>
+
+
+
+</div>
