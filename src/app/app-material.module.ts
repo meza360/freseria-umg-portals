@@ -13,6 +13,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+
 
 
 @NgModule({
@@ -30,7 +32,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatSidenavModule,
         MatSnackBarModule,
         MatStepperModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatMenuModule
     ],
     exports: [
         MatButtonModule,
@@ -46,7 +49,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatSidenavModule,
         MatSnackBarModule,
         MatStepperModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatMenuModule
     ]
 
 })

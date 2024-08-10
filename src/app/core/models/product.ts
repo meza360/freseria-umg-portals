@@ -25,6 +25,7 @@ export interface ProductToCheckout {
     syrup?: ProductExtra;
 }
 export interface CartItem {
+    trackId: string;
     product: Product;
     productToCheckout: ProductToCheckout;
     price?: Observable<number>;

@@ -11,55 +11,76 @@
             <!-- PASO 1 -->
             <mat-step label="Productos de carrito">
                 <!-- PRODUCTS -->
-                <div class="">
+                <div class="text-white">
                     <div class="col align-center text-white py-5">
                         <p class="text-white py-3">Productos en carrito: {{cartToCheckout.length}}</p>
                         <p>Total: {{(cartTotal |async)}}</p>
                     </div>
-                    <div *ngFor="let cartProduct of cartToCheckout" class="row space-between align-center full-width">
-                        <section class="row align-center justify-center">
-                            <img [src]="cartProduct.product.imageUrl" alt="Shiba Inu" class="image-fluid product-image">
-                            <span>
-                                <p class="fs-2 fw-bold">{{cartProduct.product.name}}</p>
-                                <p class="fs-4 fw-light">{{cartProduct.product.description}}</p>
+                    <div *ngFor="let cartProduct of cartToCheckout" class="row space-around align-center full-width">
+                        <section class="row align-center justify-start full-width">
+                            <img [src]="cartProduct.product.imageUrl" alt="product-icon"
+                                 class="image-fluid product-image">
+                            <span class="col word-wrap space-evenly">
+                                <p class="fs-4 fw-bold text-white">{{cartProduct.product.name}}</p>
+                                <p class="fs-4 fw-light text-white">{{cartProduct.product.description}}</p>
                             </span>
                         </section>
-                        <section>
+                        <section class="full-width col align-end">
                             <mat-form-field>
                                 <mat-label>Tamaño</mat-label>
-                                <mat-select (selectionChange)="trackSize($event, cartProduct.product.id)">
+                                <mat-select (selectionChange)="trackSize($event, cartProduct.trackId)">
                                     @for (size of cartProduct.product.size; track size) {
                                     <mat-option [value]="size">{{size.name}}</mat-option>
                                     }
                                 </mat-select>
                             </mat-form-field>
                         </section>
-                        <section>
+                        <section class="full-width col align-end">
                             <mat-form-field>
                                 <mat-label>Dulces</mat-label>
-                                <mat-select (selectionChange)="trackCandy($event, cartProduct.product.id)">
+                                <mat-select (selectionChange)="trackCandy($event, cartProduct.trackId)">
                                     @for (candy of cartProduct.product.candy; track candy) {
                                     <mat-option [value]="candy">{{candy.name}}</mat-option>
                                     }
                                 </mat-select>
                             </mat-form-field>
                         </section>
-                        <section>
+                        <section class="full-width col align-end">
                             <mat-form-field>
                                 <mat-label>Jarabe</mat-label>
-                                <mat-select (selectionChange)="trackSyrup($event, cartProduct.product.id)">
+                                <mat-select (selectionChange)="trackSyrup($event, cartProduct.trackId)">
                                     @for (syrup of cartProduct.product.syrup; track syrup) {
                                     <mat-option [value]="syrup">{{syrup.name}}</mat-option>
                                     }
                                 </mat-select>
                             </mat-form-field>
                         </section>
-                        <section>
-                            <p>Precio: {{(cartProduct.price | async)}}</p>
+                        <section class="full-width col align-center">
+                            <p>Precio: {{(cartProduct.price | async)?.toFixed(2) ?? 0.00}}</p>
+                            <button mat-button (click)="removeProduct(cartProduct)">
+                                Quitar producto
+                                <mat-icon class="" fontIcon="close"></mat-icon>
+                            </button>
                         </section>
                     </div>
                     <div>
-                        <button mat-flat-button>Agregar otro producto</button>
+                        <button mat-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="products">
+                            Agregar producto
+                            <mat-icon class="" fontIcon="add"></mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" yPosition="below">
+                            <span *ngFor="let product of products">
+                                <button mat-menu-item (click)="addProduct($event, product)">
+                                    <span class="row align-center space-between">
+                                        <img [src]="product.imageUrl" alt="product-icon"
+                                             class="image-fluid product-icon">
+                                        <span>
+                                            <p class="fs-4 fw-bold text-white">{{product.name}}</p>
+                                        </span>
+                                    </span>
+                                </button>
+                            </span>
+                        </mat-menu>
                     </div>
                 </div>
                 <div class="row justify-end full-width">
@@ -81,6 +102,9 @@
                     <button mat-button matStepperPrevious>Atras</button>
                     <button mat-button matStepperNext>A pagar</button>
                 </div>
+            </mat-step>
+            <mat-step label="Confirmacion de pago">
+
             </mat-step>
             <!-- PASO 1 -->
         </mat-horizontal-stepper>
