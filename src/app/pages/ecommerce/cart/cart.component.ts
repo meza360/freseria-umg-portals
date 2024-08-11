@@ -189,11 +189,13 @@ export class CartComponent implements OnInit, AfterViewInit {
           productToCart.productToCheckout.size.price,
           productToCart.productToCheckout.candy?.price ?? 0,
           productToCart.productToCheckout.syrup?.price ?? 0));
+    this.trackPrice();
   }
   removeProduct(productToRemove: CartItem) {
     //removes product from cartToCheckout array based on trackId
     let index = this.cartToCheckout.indexOf(productToRemove);
     this.cartToCheckout.splice(index, 1);
+    this.trackPrice();
   }
 
   resetFormFields() {

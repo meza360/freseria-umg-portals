@@ -1,6 +1,14 @@
 <div class="admin-theme full-height px-3 py-3 text-center">
-    <div class="row space-between align-center">
-        <h1 class="text-white">Freseria UMG</h1>
+    <div class="row space-around align-center text-white">
+        <span class="row align-center">
+            <img src="assets/pngs/logo-umg.png" alt="logo-umg" class="umg-icon">
+            <span class="row align-center">
+                <h1>Freseria UMG</h1>
+            </span>
+        </span>
+        <span class="row">
+            <h1>Grupo 1B</h1>
+        </span>
     </div>
     <div class="text-center full-width" *ngIf="(isLoading | async); else orderCart">
         <mat-spinner class="spinner"></mat-spinner>
@@ -29,7 +37,7 @@
                                 <mat-label>Tamaño</mat-label>
                                 <mat-select (selectionChange)="trackSize($event, cartProduct.trackId)">
                                     @for (size of cartProduct.product.size; track size) {
-                                    <mat-option [value]="size">{{size.name}}</mat-option>
+                                    <mat-option [value]="size">{{size.name +'('+size.price+')'}}</mat-option>
                                     }
                                 </mat-select>
                             </mat-form-field>
@@ -39,7 +47,7 @@
                                 <mat-label>Dulces</mat-label>
                                 <mat-select (selectionChange)="trackCandy($event, cartProduct.trackId)">
                                     @for (candy of cartProduct.product.candy; track candy) {
-                                    <mat-option [value]="candy">{{candy.name}}</mat-option>
+                                    <mat-option [value]="candy">{{candy.name +'('+candy.price+')'}}</mat-option>
                                     }
                                 </mat-select>
                             </mat-form-field>
@@ -49,7 +57,7 @@
                                 <mat-label>Jarabe</mat-label>
                                 <mat-select (selectionChange)="trackSyrup($event, cartProduct.trackId)">
                                     @for (syrup of cartProduct.product.syrup; track syrup) {
-                                    <mat-option [value]="syrup">{{syrup.name}}</mat-option>
+                                    <mat-option [value]="syrup">{{syrup.name +'('+syrup.price+')'}}</mat-option>
                                     }
                                 </mat-select>
                             </mat-form-field>
