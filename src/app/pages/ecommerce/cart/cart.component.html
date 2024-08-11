@@ -5,16 +5,15 @@
     <div class="text-center full-width" *ngIf="(isLoading | async); else orderCart">
         <mat-spinner class="spinner"></mat-spinner>
     </div>
-    <ng-template #orderCart>
-
-        <mat-horizontal-stepper>
+    <ng-template #orderCart class="mx-2">
+        <mat-horizontal-stepper linear #orderStepper>
             <!-- PASO 1 -->
             <mat-step label="Productos de carrito">
                 <!-- PRODUCTS -->
                 <div class="text-white">
                     <div class="col align-center text-white py-5">
                         <p class="text-white py-3">Productos en carrito: {{cartToCheckout.length}}</p>
-                        <p>Total: {{(cartTotal |async)}}</p>
+                        <p>Total: {{(cartTotal |async)?.toFixed(2)}}</p>
                     </div>
                     <div *ngFor="let cartProduct of cartToCheckout" class="row space-around align-center full-width">
                         <section class="row align-center justify-start full-width">
@@ -87,16 +86,77 @@
                     <button mat-button matStepperNext>Continuar</button>
                 </div>
             </mat-step>
-            <mat-step label="Datos del cliente">
-                <div>
-                    <mat-form-field>
-                        <mat-label>Nombre</mat-label>
-                        <input matInput placeholder="Nombre">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Correo</mat-label>
-                        <input matInput placeholder="Correo">
-                    </mat-form-field>
+            <mat-step label="Datos del cliente" [stepControl]="customerInfoForm">
+                <div class="row space-evenly full-width">
+                    <section class="col align-center justify-start full-width">
+                        <div>
+                            <h3 class="text-white">Datos de facturacion</h3>
+                        </div>
+                        <form [formGroup]="customerInfoForm.controls.billTo" class="full-width">
+                            <div class="row full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Nombre</mat-label>
+                                    <input matInput placeholder="Nombre" formControlName="name">
+                                </mat-form-field>
+                            </div>
+                            <div class="row full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Correo</mat-label>
+                                    <input matInput placeholder="Correo" formControlName="email">
+                                </mat-form-field>
+                            </div>
+                            <div class="row full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>NIT - C/F</mat-label>
+                                    <input matInput placeholder="NIT sin guiones" formControlName="taxId">
+                                </mat-form-field>
+                            </div>
+                            <div class="row full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Direccion</mat-label>
+                                    <input matInput placeholder="13 calle avenida Elena..." formControlName="address">
+                                </mat-form-field>
+                            </div>
+                        </form>
+                    </section>
+                    <section class="col align-center justify-start full-width">
+                        <div class="col align-center justify-start full-width">
+                            <h3 class="text-white">Datos de pago</h3>
+                            <span class="row space-between justify-center full-width py-0 my-0 text-white">
+                                <span class="col align-center">
+                                    <img src="assets/svgs/credit-card.svg" alt="card-icon" class="card-icon">
+                                </span>
+                                <div class="col align-center text-white">
+                                    <p class="text-white py-3">Productos en carrito: {{cartToCheckout.length}}</p>
+                                    <p>Total: {{(cartTotal |async)?.toFixed(2)}}</p>
+                                </div>
+                            </span>
+                        </div>
+                        <form [formGroup]="customerInfoForm.controls.paymentInfo" class="full-width py-0 my-0">
+                            <div class="row full-width">
+                                <mat-form-field class="full-width px-2">
+                                    <mat-label>Numero de tarjeta</mat-label>
+                                    <input matInput type="number" placeholder="XXXX YYYY XXXX YYYY"
+                                           formControlName="cardNumber">
+                                </mat-form-field>
+                            </div>
+                            <div class="row space-evenly full-width">
+                                <div class="width-50 px-2">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Fecha de expiracion de tarjeta</mat-label>
+                                        <input matInput placeholder="MM/YY" formControlName="cardExpiration">
+                                    </mat-form-field>
+                                </div>
+                                <div class="width-50 px-2">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Codigo de seguridad</mat-label>
+                                        <input matInput type="number" placeholder="" formControlName="cardSecurityCode">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+
+                    </section>
                 </div>
                 <div class="row justify-end full-width">
                     <button mat-button matStepperPrevious>Atras</button>
@@ -104,7 +164,12 @@
                 </div>
             </mat-step>
             <mat-step label="Confirmacion de pago">
-
+                <div class="col align-center justify-center full-width text-white">
+                    <h2>Pago procesado correctamente</h2>
+                    <h3>No. de Orden {{'OID'}} <br> Hemos enviado el resumen de tu compra a tu correo electronico</h3>
+                    <button mat-button (click)="resetCart()">Volver a comprar</button>
+                    <img src="assets/svgs/check-circle.svg" alt="check-circle" class="check-circle">
+                </div>
             </mat-step>
             <!-- PASO 1 -->
         </mat-horizontal-stepper>

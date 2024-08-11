@@ -105,6 +105,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding-top: 1.5em;
     padding-bottom: 1.5em;
 }
+.py-0{
+    padding-top: 0;
+    padding-bottom: 0;
+} 
+.my-0{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.px-2{
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
+.mx-2{
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+}
 
 .word-wrap{
     word-wrap:normal;

@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ProductsService } from '../../../core/services';
 import { asyncScheduler, BehaviorSubject, Observable, observeOn } from 'rxjs';
 import { CartItem, Product } from '../../../core/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSelectChange } from '@angular/material/select';
 import { v4 as uuidv4 } from 'uuid';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, AfterViewInit {
   isLoadingProducts$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   isLoading: Observable<boolean> = this.isLoadingProducts$.asObservable()
     .pipe(observeOn(asyncScheduler));
@@ -22,10 +24,43 @@ export class CartComponent implements OnInit {
   cartTotal: Observable<number> = this.cartTotal$.asObservable()
     .pipe(observeOn(asyncScheduler));
 
+  @ViewChild(MatStepper) orderStepper!: MatStepper;
+
+  customerInfoForm: FormGroup<{
+    billTo: FormGroup<{
+      name: FormControl<string | null>,
+      taxId: FormControl<string | null>,
+      email: FormControl<string | null>,
+      address: FormControl<string | null>;
+    }>,
+    paymentInfo: FormGroup<{
+      cardNumber: FormControl<string | null>,
+      cardExpiration: FormControl<string | null>,
+      cardSecurityCode: FormControl<string | null>,
+    }>;
+  }> = this.formBuilder.group({
+    billTo: new FormGroup({
+      name: new FormControl<string | null>('', [Validators.required]),
+      taxId: new FormControl<string | null>('', [Validators.required]),
+      email: new FormControl<string | null>('', [Validators.required]),
+      address: new FormControl<string | null>('', [Validators.required])
+    }),
+    paymentInfo: new FormGroup({
+      cardNumber: new FormControl<string | null>('',),
+      cardExpiration: new FormControl<string | null>('',),
+      cardSecurityCode: new FormControl<string | null>('',)
+    })
+  });
+
   constructor (
     private productsService: ProductsService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private router: Router) {
     this.refreshProducts();
+  }
+  ngAfterViewInit(): void {
+    console.log(this.orderStepper);
+
   }
 
   ngOnInit(): void {
@@ -161,4 +196,21 @@ export class CartComponent implements OnInit {
     this.cartToCheckout.splice(index, 1);
   }
 
+  resetFormFields() {
+    this.customerInfoForm.reset();
+  }
+
+  resetCart() {
+    this.cartToCheckout = [];
+    this.cartTotal$.next(0);
+    this.refreshProducts();
+    this.router.navigate(["ecommerce", "cart"], {
+      queryParams: {
+        cartReset: true
+      },
+      skipLocationChange: true
+    });
+    this.orderStepper.reset();
+
+  }
 }

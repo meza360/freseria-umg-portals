@@ -14,6 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 
@@ -33,7 +34,8 @@ import { MatMenuModule } from '@angular/material/menu';
         MatSnackBarModule,
         MatStepperModule,
         MatTooltipModule,
-        MatMenuModule
+        MatMenuModule,
+        ReactiveFormsModule
     ],
     exports: [
         MatButtonModule,
@@ -50,7 +52,8 @@ import { MatMenuModule } from '@angular/material/menu';
         MatSnackBarModule,
         MatStepperModule,
         MatTooltipModule,
-        MatMenuModule
+        MatMenuModule,
+        ReactiveFormsModule
     ]
 
 })
