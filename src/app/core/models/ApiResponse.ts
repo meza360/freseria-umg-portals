@@ -1,7 +1,9 @@
-import { Product } from './index';
+import { Product, Sale } from './index';
 
 export interface ApiResponse {
     isSuccess: boolean;
-    value: Product[];
+    value: Product[]
+    | Sale
+    | Array<Sale>;
     error: string | null;
 }

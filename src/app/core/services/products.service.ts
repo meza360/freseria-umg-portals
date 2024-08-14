@@ -27,7 +27,7 @@ export class ProductsService {
         tap(console.debug),
         map((response: ApiResponse) => {
           if (response.isSuccess) {
-            return response.value;
+            return <Array<Product>>response.value;
           }
           return [];
         }
@@ -36,7 +36,7 @@ export class ProductsService {
           console.error(selector);
           return new Observable<Product[]>((observer) => {
             observer.error([]);
-            //observer.complete();
+            observer.complete();
           });
         }
         ));

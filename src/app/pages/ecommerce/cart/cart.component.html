@@ -168,13 +168,14 @@
                 </div>
                 <div class="row justify-end full-width">
                     <button mat-button matStepperPrevious>Atras</button>
-                    <button mat-button matStepperNext>A pagar</button>
+                    <button mat-button (click)="toCheckout()">A pagar</button>
                 </div>
             </mat-step>
             <mat-step label="Confirmacion de pago">
-                <div class="col align-center justify-center full-width text-white">
+                <div class="col align-center justify-center full-width text-white text-center">
                     <h2>Pago procesado correctamente</h2>
-                    <h3>No. de Orden {{'OID'}} <br> Hemos enviado el resumen de tu compra a tu correo electronico</h3>
+                    <h3>No. de Orden {{saleId ?? 'NoAsignado'}} <br> Hemos enviado el resumen de tu compra a tu correo
+                        electronico</h3>
                     <button mat-button (click)="resetCart()">Volver a comprar</button>
                     <img src="assets/svgs/check-circle.svg" alt="check-circle" class="check-circle">
                 </div>

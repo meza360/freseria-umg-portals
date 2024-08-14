@@ -1,13 +1,16 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { ProductsService } from '../../../core/services';
+import { ProductsService, SaleService } from '../../../core/services';
 import { asyncScheduler, BehaviorSubject, Observable, observeOn } from 'rxjs';
-import { CartItem, Product } from '../../../core/models';
+import { CartItem, Product, Sale } from '../../../core/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSelectChange } from '@angular/material/select';
 import { v4 as uuidv4 } from 'uuid';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatStepper } from '@angular/material/stepper';
+import { SaleDetails } from '../../../core/models/sale';
+import { ApiResponse } from '../../../core/models/ApiResponse';
+
 
 @Component({
   selector: 'app-cart',
@@ -15,6 +18,8 @@ import { MatStepper } from '@angular/material/stepper';
   styleUrl: './cart.component.scss'
 })
 export class CartComponent implements OnInit, AfterViewInit {
+
+  protected saleId: string | null = null;
   isLoadingProducts$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   isLoading: Observable<boolean> = this.isLoadingProducts$.asObservable()
     .pipe(observeOn(asyncScheduler));
@@ -54,6 +59,7 @@ export class CartComponent implements OnInit, AfterViewInit {
 
   constructor (
     private productsService: ProductsService,
+    private saleService: SaleService,
     private formBuilder: FormBuilder,
     private router: Router) {
     this.refreshProducts();
@@ -213,6 +219,69 @@ export class CartComponent implements OnInit, AfterViewInit {
       skipLocationChange: true
     });
     this.orderStepper.reset();
+  }
+
+  toCheckout() {
+    if (this.customerInfoForm.invalid) {
+      return;
+    }
+    const { name, taxId, address, email } = this.customerInfoForm.controls.billTo.value;
+
+
+    let saleDetails: Array<SaleDetails> = this.cartToCheckout.map((item: CartItem): SaleDetails => {
+      return {
+        productId: item.product.id.toString(),
+        name: item.product.name,
+        description: item.product.description,
+        unitPrice: item.price$.value,
+        total: 1,
+        extras: [
+          {
+            name: "size",
+            value: item.productToCheckout.size.name,
+            price: item.productToCheckout.size.price
+          },
+          {
+            name: "candy",
+            value: item.productToCheckout.candy?.name,
+            price: item.productToCheckout.candy?.price
+          },
+          {
+            name: "syrup",
+            value: item.productToCheckout.syrup?.name,
+            price: item.productToCheckout.syrup?.price
+          }
+        ]
+      };
+    });
+
+    const newSale: Sale = {
+      establishmentTaxId: '34124435',
+      establishmentName: "La freseria UMG - Portal",
+      billTo: {
+        name: name!,
+        taxId: taxId!,
+        email: email!,
+        address: address!
+      },
+      saleDetails: saleDetails,
+      seller: {
+        id: "66affab69d655ad0996fc633",
+        name: "La freseria UMG - Portal"
+      }
+    };
+    console.log(newSale);
+
+    this.saleService.newSale(newSale)
+      .subscribe({
+        next: (response: Sale) => {
+          this.saleId = response.id!;
+          this.orderStepper.next();
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error(error);
+        }
+      });
 
   }
 }
