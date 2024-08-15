@@ -5,8 +5,9 @@
     "ng": "ng",
     "start": "ng serve --configuration=production",
     "start development": "ng serve --configuration=development",
-    "build": "ng build --configuration=production",
-    "watch": "ng build --watch --configuration=development",
+    "build": "ng build",
+    "build dev": "ng build --configuration=development",
+    "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "private": true,
@@ -41,5 +42,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.5.2"
-  }
+  },
+  "engines": {
+    "node": ">=20.0.0 <22.0.0"
+  },
+  "engineStrict": true
 }
