@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { FunctionKeyInterceptor } from './core/interceptors/function-key.interceptor';
 @NgModule({
 
     imports: [
@@ -12,7 +13,8 @@ import { CommonModule } from '@angular/common';
         CommonModule
     ],
     providers: [
-        provideHttpClient()
+        provideHttpClient(withInterceptorsFromDi()),
+        { provide: HTTP_INTERCEPTORS, useClass: FunctionKeyInterceptor, multi: true }
     ]
 })
 

@@ -1,5 +1,7 @@
 export const environment = {
-    production: false,
-    apiUrl: 'http://localhost:3000',
-    productCatalog: []
+    production: true,
+    apiUrl: 'https://localhost:7071',
+    productCatalog: [],
+    functionKey: '',
+    apimKey: ''
 };

@@ -10,7 +10,7 @@ import { ApiResponse } from '../models/ApiResponse';
 })
 export class ProductsService {
 
-  private apiUrl: string = environment.apiUrl;
+  private apiUrl: string = `${environment.apiUrl}/v2`;
   private productsCatalog: Array<Product> = [];
   constructor (private httpClient: HttpClient) {
   }
