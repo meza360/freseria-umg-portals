@@ -11,7 +11,7 @@
         </span>
     </div>
     <div class="text-center full-width" *ngIf="(isLoading | async); else orderCart">
-        <mat-spinner class="spinner"></mat-spinner>
+        <!-- <mat-spinner class="spinner"></mat-spinner> -->
     </div>
     <ng-template #orderCart class="mx-2">
         <mat-horizontal-stepper linear #orderStepper>
@@ -25,8 +25,9 @@
                     </div>
                     <div *ngFor="let cartProduct of cartToCheckout" class="row space-around align-center full-width">
                         <section class="row align-center justify-start full-width">
-                            <img [src]="cartProduct.product.imageUrl" alt="product-icon"
-                                 class="image-fluid product-image">
+                            <!-- <img [src]="cartProduct.product.imageUrl" alt="product-icon"
+                                 class="image-fluid product-image"> -->
+                            <app-product-image [imageUrl]="cartProduct.product.imageUrl"></app-product-image>
                             <span class="col word-wrap space-evenly">
                                 <p class="fs-4 fw-bold text-white">{{cartProduct.product.name}}</p>
                                 <p class="fs-4 fw-light text-white">{{cartProduct.product.description}}</p>

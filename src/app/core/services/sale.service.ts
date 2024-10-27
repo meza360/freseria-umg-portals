@@ -33,4 +33,10 @@ export class SaleService {
         )
       );
   }
+  getSale(orderId: string): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(`${this.apiUrl}/sales/findId/${orderId}`)
+      .pipe(
+        tap(console.debug),
+      );
+  }
 }

@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { MatStepper } from '@angular/material/stepper';
 import { SaleDetails } from '../../../core/models/sale';
 import { ApiResponse } from '../../../core/models/ApiResponse';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { LoadingDialogComponent } from '../../../components/shared/loading-dialog/loading-dialog.component';
 
 
 @Component({
@@ -31,6 +33,7 @@ export class CartComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatStepper) orderStepper!: MatStepper;
 
+  dialogref: MatDialogRef<LoadingDialogComponent> | null = null;
   customerInfoForm: FormGroup<{
     billTo: FormGroup<{
       name: FormControl<string | null>,
@@ -61,8 +64,22 @@ export class CartComponent implements OnInit, AfterViewInit {
     private productsService: ProductsService,
     private saleService: SaleService,
     private formBuilder: FormBuilder,
-    private router: Router) {
+    private router: Router,
+    private matDialog: MatDialog) {
     this.refreshProducts();
+  }
+  openLoadingDialog(): void {
+    //this.isLoadingProducts$.next(true);
+    this.dialogref = this.matDialog.open(LoadingDialogComponent,
+      {
+        width: '70%',
+        data: "",
+        disableClose: true
+      });
+  }
+  closeLoadingDialog(): void {
+    this.dialogref?.close();
+    //this.isLoadingProducts$.next(false);
   }
   ngAfterViewInit(): void {
     console.log(this.orderStepper);
@@ -70,6 +87,7 @@ export class CartComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.openLoadingDialog();
     this.isLoading.subscribe({
       next: (loading: boolean): void => {
         if (!loading) {
@@ -124,6 +142,7 @@ export class CartComponent implements OnInit, AfterViewInit {
         },
         error: (error: HttpErrorResponse): void => {
           console.error(error);
+          this.closeLoadingDialog();
           this.isLoadingProducts$.next(false);
         },
         complete: () => {
@@ -159,6 +178,7 @@ export class CartComponent implements OnInit, AfterViewInit {
                 this.cartToCheckout[0].productToCheckout.candy?.price ?? 0,
                 this.cartToCheckout[0].productToCheckout.syrup?.price ?? 0));
           this.isLoadingProducts$.next(false);
+          this.closeLoadingDialog();
         }
       });
   }
@@ -225,6 +245,7 @@ export class CartComponent implements OnInit, AfterViewInit {
     if (this.customerInfoForm.invalid) {
       return;
     }
+    this.openLoadingDialog();
     const { name, taxId, address, email } = this.customerInfoForm.controls.billTo.value;
 
 
@@ -274,12 +295,16 @@ export class CartComponent implements OnInit, AfterViewInit {
 
     this.saleService.newSale(newSale)
       .subscribe({
-        next: (response: Sale) => {
+        next: (response: Sale): void => {
           this.saleId = response.id!;
           this.orderStepper.next();
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: HttpErrorResponse): void => {
           console.error(error);
+          this.closeLoadingDialog();
+        },
+        complete: (): void => {
+          this.closeLoadingDialog();
         }
       });
 
