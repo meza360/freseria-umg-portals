@@ -1,0 +1,17 @@
+<div class="admin-theme full-height px-3 py-3 text-center">
+    <div class="col space-around align-center text-white">
+
+        <p>Orden: {{order?.id}}</p>
+        <p>Cliente: {{order?.billTo?.name}} - {{order?.billTo?.email}}</p>
+        <p>Vendedor: {{order?.seller?.name}}</p>
+        <p>Productos</p>
+        @for (prod of order?.saleDetails; track $index) {
+        <span class="py-3">
+            <p>Producto: {{prod.name}}</p>
+            <p>Cantidad: {{prod.total}}</p>
+            <p>Precio: ${{prod.unitPrice}}</p>
+        </span>
+        }
+        <p>Total venta: ${{order?.totalSale}}</p>
+    </div>
+</div>
