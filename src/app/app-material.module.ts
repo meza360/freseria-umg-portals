@@ -15,6 +15,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 
@@ -35,7 +36,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
         MatStepperModule,
         MatTooltipModule,
         MatMenuModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatProgressBarModule
     ],
     exports: [
         MatButtonModule,
@@ -53,7 +55,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
         MatStepperModule,
         MatTooltipModule,
         MatMenuModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatProgressBarModule
     ]
 
 })

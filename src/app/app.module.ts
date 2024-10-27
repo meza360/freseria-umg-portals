@@ -6,11 +6,15 @@ import { MaterialModule } from './app-material.module';
 import { SharedModule } from './shared.module';
 import { CartComponent } from './pages/ecommerce/cart/cart.component';
 import { APP_BASE_HREF, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { LoadingDialogComponent } from './components/shared/loading-dialog/loading-dialog.component';
+import { ProductImageComponent } from './components/shared/product-image/product-image.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CartComponent
+    CartComponent,
+    LoadingDialogComponent,
+    ProductImageComponent
   ],
   imports: [
     AppRoutingModule,
